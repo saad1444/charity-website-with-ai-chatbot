@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charity for a Better Future</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+/* Charity Website Base Styles (Standard Green Theme) */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f4f4f4; /* Light background for charity site */
+    color: #333;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background: #28a745; /* Green header */
+    color: white;
+    padding: 20px 10px;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.5rem;
+}
+
+nav {
+    background: #333;
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+}
+
+nav ul {
+    list-style: none;
+    display: inline-flex;
+    padding: 0;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+nav ul li {
+    margin: 0 15px;
+    position: relative;
+}
+
+nav ul li a {
+    position: relative;
+    color: white;
+    text-decoration: none;
+    font-size: 1.2rem;
+    transition: color 0.3s ease;
+    padding: 5px 0;
+}
+
+nav ul li a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    width: 0;
+    height: 2px;
+    background: #28a745;
+    transition: width 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: #28a745;
+}
+
+nav ul li a:hover::after {
+    width: 100%;
+}
+
+.section {
+    display: none;
+    padding: 20px;
+}
+
+.section.active {
+    display: block;
+}
+
+.mission,
+.features-content {
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin: 20px auto;
+    width: 80%;
+}
+
+.events {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 20px auto;
+}
+
+.event-card {
+    background: #fff;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.event-card h3 {
+    margin-bottom: 10px;
+}
+
+.donation-form {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 500px;
+    margin: 20px auto;
+}
+
+.donation-form label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.donation-form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.donation-form button {
+    background: #28a745;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.3s ease;
+}
+
+.donation-form button:hover {
+    background: #218838;
+}
+
+.feature-image {
+    width: 100%;
+    max-width: 290px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
+    margin: 0 auto 15px auto;
+}
+
+/* Footer specific styles */
+footer a:hover {
+    color: #3ec8ff !important; /* Lighter color on hover for contrast */
+}
+
+/* ------------------------------------- */
+/* Floating Chatbot Styles (Re-Styled for better integration) */
+/* ------------------------------------- */
+
+#chatToggle {
+    position: fixed;
+    bottom: 22px;
+    right: 22px;
+    width: 60px; /* Slightly smaller */
+    height: 60px;
+    background: #28a745; /* Use primary color */
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1000;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    color: white;
+    font-size: 24px;
+    transition: 0.3s;
+}
+#chatToggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 5px 20px rgba(40, 167, 69, 0.6);
+    background: #218838; /* Darker green on hover */
+}
+
+#chatPopup {
+    display: none;
+    position: fixed;
+    bottom: 90px;
+    right: 22px;
+    width: 350px; /* Slightly smaller */
+    max-height: 480px; /* Slightly smaller */
+    background: #ffffff; /* White background for contrast */
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 1000;
+    animation: popupFade 0.4s ease forwards;
+    color: #333; /* Dark text */
+}
+@keyframes popupFade {
+    from { transform: translateY(20px); opacity:0; }
+    to { transform: translateY(0); opacity:1; }
+}
+
+#chatBody {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: #f9f9f9;
+}
+
+.msg {
+    padding: 10px 14px;
+    border-radius: 18px; /* Rounded bubbles */
+    max-width: 80%;
+    white-space: pre-wrap;
+    position: relative;
+    font-size: 0.95rem;
+    animation: msgFade 0.3s ease forwards;
+}
+.msg.user {
+    background: #dcf8c6; /* Light green user message */
+    align-self: flex-end;
+    color: #333;
+    border-bottom-right-radius: 4px;
+}
+.msg.bot {
+    background: #fff; /* White bot message */
+    align-self: flex-start;
+    border: 1px solid #eee;
+    color: #333;
+    border-bottom-left-radius: 4px;
+}
+@keyframes msgFade {
+    from { opacity:0; transform: translateY(10px); }
+    to { opacity:1; transform: translateY(0); }
+}
+
+#userInput {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin: 8px 10px 0 10px;
+    border-radius: 20px;
+    border: 1px solid #ddd;
+    background: #f1f1f1;
+    color: inherit;
+    outline: none;
+    transition: 0.3s;
+}
+#userInput:focus {
+    border-color: #28a745;
+    box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
+    background: #fff;
+}
+#chatControls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 10px;
+    background: #fff;
+}
+
+#chatControls button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    background: #28a745;
+    color: white;
+    font-weight: 600;
+    transition: 0.3s;
+    margin-left: 8px;
+}
+#chatControls button:hover {
+    background: #218838;
+}
+#closeChat {
+    background: #eee;
+    color: #333;
+    font-weight: normal;
+    padding: 5px 10px;
+    border-radius: 6px;
+    transition: background 0.3s;
+}
+#closeChat:hover {
+    background: #ddd;
+}
+/* Loader Dots */
+.dots {
+    display: flex;
+    align-items: center;
+}
+.dots span {
+    width: 6px;
+    height: 6px;
+    background-color: #999;
+    border-radius: 50%;
+    margin: 0 3px;
+    animation: loadingDots 1.5s infinite ease-in-out;
+}
+.dots span:nth-child(2) {
+    animation-delay: 0.3s;
+}
+.dots span:nth-child(3) {
+    animation-delay: 0.6s;
+}
+@keyframes loadingDots {
+    0%, 80%, 100% {
+        transform: scale(0);
+        opacity: 0.5;
+    }
+    40% {
+        transform: scale(1.0);
+        opacity: 1;
+    }
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .mission,
+    .features-content {
+        width: 90%;
+    }
+
+    nav ul li {
+        margin: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 2rem;
+    }
+
+    .events {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+    #chatPopup {
+        width: 90%;
+        max-width: 350px;
+        bottom: 80px;
+        right: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 1.6rem;
+    }
+
+    nav ul {
+        flex-direction: column;
+    }
+
+    nav ul li {
+        margin: 5px 0;
+    }
+
+    .mission,
+    .features-content {
+        width: 95%;
+    }
+
+    .donation-form {
+        width: 95%;
+    }
+    #chatToggle {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Charity for a Better Future</h1>
+        <p>Making a difference, one step at a time.</p>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#" onclick="showSection('mission')">Mission</a></li>
+            <li><a href="#" onclick="showSection('events')">Events</a></li>
+            <li><a href="#" onclick="showSection('donation')">Donate</a></li>
+            <li><a href="#" onclick="showSection('features')">Features</a></li>
+        </ul>
+    </nav>
+
+    <section id="mission" class="section active">
+    <div class="mission">
+        <h2>Our Mission</h2>
+        <img src="sds1.webp" alt="Mission Image" style="width: 100%; border-radius: 8px; margin-bottom: 20px;">
+        <blockquote style="font-style: italic; color: #555; border-left: 4px solid #28a745; padding-left: 10px; margin-bottom: 20px;">
+            "The best way to find yourself is to lose yourself in the service of others." – Mahatma Gandhi
+        </blockquote>
+        <p>Our mission is to support underprivileged communities by providing education, healthcare, and other essential resources. Together, we can create a brighter and more equitable future for all.</p>
+        <h3>Key Areas of Focus:</h3>
+        <ul style="line-height: 1.8; padding-left: 20px;">
+            <li><strong>Education:</strong> Offering free educational resources and workshops to empower children and adults.</li>
+            <li><strong>Healthcare:</strong> Providing access to essential healthcare services for those in need.</li>
+            <li><strong>Community Support:</strong> Building strong communities through support programs and volunteer activities.</li>
+        </ul>
+        <h3 style="margin-top: 20px;">How You Can Help:</h3>
+        <p>Join us in our journey to make a difference. Volunteer, donate, or spread the word about our mission. Every action counts!</p>
+    </div>
+</section>
+
+    <section id="events" class="section">
+        <h2 style="text-align: center; color: #28a745;">Upcoming Events</h2>
+        <div class="events">
+            <div class="event-card">
+                <h3>Community Health Drive</h3>
+                <p>Date: February 15, 2025</p>
+                <p>Location: Downtown Community Center</p>
+                <p>Join us in providing free health check-ups and medicines to those in need.</p>
+            </div>
+            <div class="event-card">
+                <h3>Education for All Workshop</h3>
+                <p>Date: March 10, 2025</p>
+                <p>Location: Central Library</p>
+                <p>Empowering children with knowledge through free educational resources and guidance.</p>
+            </div>
+            <div class="event-card">
+                <h3>Charity Run</h3>
+                <p>Date: April 25, 2025</p>
+                <p>Location: City Park</p>
+                <p>Participate in our annual run to raise funds for our charity initiatives.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="donation" class="section">
+        <h2 style="text-align: center; color: #28a745;">Make a Donation</h2>
+        <form class="donation-form" id="donationForm">
+            <label for="name">Your Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="email">Your Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="amount">Donation Amount ($):</label>
+            <input type="number" id="amount" name="amount" min="1" required>
+
+            <button type="submit">Donate Now</button>
+        </form>
+    </section>
+
+<section id="features" class="section">
+    <div class="features-content">
+        <h2 style="text-align: center; color: #28a745;">Key Features of Our Website</h2>
+        <p style="text-align: center; margin-bottom: 20px;">Explore the unique features that make our website a powerful platform for driving positive change.</p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; padding: 20px;">
+            <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
+                 <img src="sas2.webp" alt="Responsive Design" class="feature-image">
+                <h3>Responsive Design</h3>
+                <p>Enjoy a seamless browsing experience across all devices, including desktops, tablets, and smartphones.</p>
+            </div>
+            <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
+                <img src="sas3.avif" alt="User-Friendly Interface" class="feature-image">
+                <h3>Easy Navigation</h3>
+                <p>Our intuitive interface ensures effortless access to all information, making it easy to explore and contribute.</p>
+            </div>
+            <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
+                <img src="sas4.avif" alt="Secure Donations" class="feature-image">
+                <h3>Secure Donations</h3>
+                <p>Our robust online donation system ensures your contributions are safe, secure, and simple to make.</p>
+            </div>
+            <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
+                <img src="sas5.webp" alt="Regular Updates" class="feature-image">
+                <h3>Regular Updates</h3>
+                <p>Stay informed with the latest news, updates about our mission, and details of upcoming events.</p>
+            </div>
+            <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
+                <img src="sas7.avif" alt="Impact Transparency" class="feature-image">
+                <h3>Impact Transparency</h3>
+                <p>Access comprehensive details on how your contributions are utilized to make a tangible difference.</p>
+            </div>
+            <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
+                <img src="sas6.avif" alt="Volunteer Opportunities" class="feature-image">
+                <h3>Volunteer Opportunities</h3>
+                <p>Get involved with our various programs and make a hands-on contribution to our mission.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <div id="chatToggle">💬</div>
+
+    <div id="chatPopup">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-bottom:1px solid #ddd; background: #fff;">
+            <strong>Charity AI Bot</strong>
+            <button id="closeChat" class="btn ghost">Close</button>
+        </div>
+        <div id="chatBody">
+            <div class="msg bot">Hello! How can I help you today? Ask me about our mission, events, or how to donate.</div>
+        </div>
+        <div id="chatControls">
+            <input id="userInput" placeholder="Type your message..."/>
+            <button id="sendBtn">Send</button>
+        </div>
+    </div>
+    <footer style="background-color: #2a2a2a; color: #f1f1f1; padding: 40px 20px; font-family: Arial, sans-serif;">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 20px; max-width: 1200px; margin: auto;">
+        <div style="flex: 1; min-width: 250px;">
+            <h3 style="color: #28a745; margin-bottom: 15px;">About Us</h3>
+            <p style="line-height: 1.6;">We are a non-profit organization dedicated to making a positive impact in underprivileged communities. Join us in creating a brighter future for all.</p>
+        </div>
+
+        <div style="flex: 1; min-width: 200px;">
+            <h3 style="color: #28a745; margin-bottom: 15px;">Quick Links</h3>
+            <ul style="list-style: none; padding: 0;">
+                <li style="margin-bottom: 10px;"><a href="#" onclick="showSection('mission')" style="color: #f1f1f1; text-decoration: none; transition: color 0.3s;">Our Mission</a></li>
+                <li style="margin-bottom: 10px;"><a href="#" onclick="showSection('events')" style="color: #f1f1f1; text-decoration: none; transition: color 0.3s;">Events</a></li>
+                <li style="margin-bottom: 10px;"><a href="#" onclick="showSection('donation')" style="color: #f1f1f1; text-decoration: none; transition: color 0.3s;">Donate</a></li>
+                <li style="margin-bottom: 10px;"><a href="#" onclick="showSection('features')" style="color: #f1f1f1; text-decoration: none; transition: color 0.3s;">Features</a></li>
+            </ul>
+        </div>
+
+        <div style="flex: 1; min-width: 250px;">
+            <h3 style="color: #28a745; margin-bottom: 15px;">Contact Us</h3>
+            <p style="line-height: 1.6;">Email: <a href="mailto:info@charityfuture.org" style="color: #28a745; text-decoration: none;">saad12@gmail.com</a></p>
+            <p style="line-height: 1.6;">Phone: <a href="tel:09876543212" style="color: #28a745; text-decoration: none;">09876543212</a></p>
+            <p style="line-height: 1.6;">Address: Maripur Hawksbay Road Near PSO Pump karachi</p>
+        </div>
+
+        <div style="display: flex; gap: 15px; align-items: center; justify-content: center; flex: 1; min-width: 150px;">
+            <a href="https://facebook.com" target="_blank" style="color: #f1f1f1; text-decoration: none; transition: transform 0.3s;">
+                <i class="fab fa-facebook" style="font-size: 30px;"></i>
+            </a>
+            <a href="https://twitter.com" target="_blank" style="color: #f1f1f1; text-decoration: none; transition: transform 0.3s;">
+                <i class="fab fa-twitter" style="font-size: 30px;"></i>
+            </a>
+            <a href="https://instagram.com" target="_blank" style="color: #f1f1f1; text-decoration: none; transition: transform 0.3s;">
+                <i class="fab fa-instagram" style="font-size: 30px;"></i>
+            </a>
+            <a href="https://linkedin.com" target="_blank" style="color: #f1f1f1; text-decoration: none; transition: transform 0.3s;">
+                <i class="fab fa-linkedin" style="font-size: 30px;"></i>
+            </a>
+        </div>
+    </div>
+
+    <hr style="border: 0.5px solid #444; margin: 20px 0;">
+
+    <div style="text-align: center;">
+        <p style="margin: 5px 0;">&copy; <span id="year"></span> Charity for a Better Future. All Rights Reserved.</p>
+        <p style="margin: 5px 0;">Website created by <a href="https://yourportfolio.com" style="color: #28a745; text-decoration: none;">Saad</a>.</p>
+    </div>
+</footer>
+
+
+    <script>
+// =========================================================================
+//                           MAIN APPLICATION LOGIC
+// =========================================================================
+
+// --- Tab Switching Logic ---
+function showSection(sectionId) {
+    document.querySelectorAll('.section').forEach(section => {
+        section.classList.remove('active');
+    });
+    const targetSection = document.getElementById(sectionId);
+    if (targetSection) {
+        targetSection.classList.add('active');
+    }
+}
+
+// --- Contact Form Logic ---
+// Note: This function assumes your HTML has a form with class 'contact-form'
+// and input fields with IDs 'contact-name', 'contact-email', 'contact-message'.
+function confirmBooking(event) {
+    event.preventDefault(); // Stop the form from submitting normally
+    
+    const form = document.querySelector('.contact-form');
+    const nameInput = document.getElementById('contact-name');
+    
+    if (nameInput) {
+        const name = nameInput.value;
+        alert(`Thank you, ${name}! Your message has been sent successfully. We will get back to you soon.`);
+    } else {
+        alert(`Thank you for your message! We will get back to you soon.`);
+    }
+    
+    if (form) {
+        form.reset();
+    }
+    return false;
+}
+
+// Attach the contact form listener on load
+document.addEventListener('DOMContentLoaded', () => {
+    const contactForm = document.querySelector('.contact-form');
+    if (contactForm) {
+        contactForm.addEventListener('submit', confirmBooking);
+    }
+    // Initialize current year in footer
+    const yearElement = document.getElementById('year');
+    if (yearElement) {
+        yearElement.innerText = new Date().getFullYear();
+    }
+    // Optionally show a default section on load (e.g., 'home' or 'donate')
+    // showSection('home'); 
+});
+
+
+// =========================================================================
+//                           CHATBOT CORE LOGIC
+// =========================================================================
+
+const toggle = document.getElementById('chatToggle');
+const popup = document.getElementById('chatPopup');
+const closeBtn = document.getElementById('closeChat');
+const input = document.getElementById('userInput');
+const sendBtn = document.getElementById('sendBtn');
+const chatBody = document.getElementById('chatBody');
+
+let isOpen = false;
+let isWaiting = false;
+
+// --- Chat Interface Handlers ---
+if (toggle && popup && closeBtn && input && sendBtn && chatBody) {
+    toggle.onclick = () => {
+        isOpen = !isOpen;
+        popup.style.display = isOpen ? 'flex' : 'none';
+        if (isOpen) {
+            input.focus();
+            if (chatBody.children.length === 0) {
+                // Initial welcome message
+                appendMessage(hardcodedResponses["hello"], 'bot'); 
+            }
+        }
+    };
+    closeBtn.onclick = () => {
+        popup.style.display = 'none';
+        isOpen = false;
+    };
+
+    input.addEventListener('keydown', e => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            handleSend();
+        }
+    });
+    sendBtn.onclick = handleSend;
+}
+
+function appendMessage(txt, cls) {
+    const div = document.createElement('div');
+    div.className = 'msg ' + cls;
+    div.textContent = txt;
+    chatBody.appendChild(div);
+    chatBody.scrollTop = chatBody.scrollHeight;
+    return div;
+}
+
+// --- Hardcoded Responses Dictionary for Charity Bot ---
+const hardcodedResponses = {
+    "hello": "Hello! Welcome to Charity for a Better Future. How can I assist you today?",
+    "hi": "Hello! Welcome to Charity for a Better Future. How can I assist you today?",
+    "mission": "Our mission is to support underprivileged communities by providing education, healthcare, and essential resources. Together, we’re building a brighter, more equitable future for all.",
+    "education": "We focus on empowering children and adults through free educational resources, workshops, and guidance.",
+    "health": "We organize healthcare programs that offer free check-ups, medicines, and awareness sessions for those in need.",
+    "healthcare": "We organize healthcare programs that offer free check-ups, medicines, and awareness sessions for those in need.",
+    "community": "We believe in building strong communities through volunteer activities, support programs, and events that bring people together.",
+    "event": "Our upcoming events include the Community Health Drive (Feb 15, 2025), Education for All Workshop (Mar 10, 2025), and the Charity Run (Apr 25, 2025). Visit the 'Events' page for full details.",
+    "upcoming": "Our upcoming events include the Community Health Drive (Feb 15, 2025), Education for All Workshop (Mar 10, 2025), and the Charity Run (Apr 25, 2025). Visit the 'Events' page for full details.",
+    "donate": "Thank you for your kindness! You can make a secure donation through our 'Donate' page. Every contribution helps support education, healthcare, and community programs.",
+    "donation": "Thank you for your kindness! You can make a secure donation through our 'Donate' page. Every contribution helps support education, healthcare, and community programs.",
+    "volunteer": "We’re always looking for passionate volunteers! You can explore volunteer opportunities in our 'Features' section or contact us directly for more details.",
+    "contact": "You can reach us via email at saad12@gmail.com or call us at 09876543212. Our address is Maripur Hawksbay Road, Near PSO Pump, Karachi.",
+    "about": "We are a non-profit organization dedicated to improving lives through education, healthcare, and community support. Join us in making a lasting impact.",
+    "location": "Our office is located at Maripur Hawksbay Road, Near PSO Pump, Karachi.",
+    "address": "Our office is located at Maripur Hawksbay Road, Near PSO Pump, Karachi.",
+    "email": "You can email us anytime at saad12@gmail.com. We’ll be happy to assist you!",
+    "phone": "You can call us at 09876543212 during working hours for any inquiries.",
+    "thank": "You’re very welcome! Your support means the world to us.",
+    "bye": "Goodbye! Thank you for supporting Charity for a Better Future.",
+    "goodbye": "Goodbye! Thank you for supporting Charity for a Better Future."
+};
+
+
+async function handleSend() {
+    if (isWaiting) return;
+    const text = input.value.trim();
+    if (!text) return;
+    input.value = '';
+    appendMessage(text, 'user');
+    
+    isWaiting = true;
+    sendBtn.disabled = true;
+
+    // Typing indicator
+    const temp = document.createElement('div');
+    temp.className = 'msg bot';
+    temp.innerHTML = '<div class="dots"><span></span><span></span><span></span></div>';
+    chatBody.appendChild(temp);
+    chatBody.scrollTop = chatBody.scrollHeight;
+
+    let botResponse = null;
+    const lowerText = text.toLowerCase();
+
+    // 1. Check Hardcoded Responses (Local Data)
+    for (const key in hardcodedResponses) {
+        // Simple 'includes' check for partial matches
+        if (lowerText.includes(key)) {
+            botResponse = hardcodedResponses[key];
+            break;
+        }
+    }
+
+    if (botResponse) {
+        // If local response found, use it quickly
+        await new Promise(r => setTimeout(r, 600)); 
+        temp.textContent = botResponse;
+        
+    } else {
+        // 2. Fallback to Ollama AI
+        const systemPrompt = "You are a friendly and professional AI assistant for a non-profit charity website called 'Charity for a Better Future'. Your responses should encourage donations or volunteering, and be brief (max 2-3 lines) and helpful. Only reply in short, simple English.";
+        try {
+            const payload = { 
+                model: "phi3:latest", 
+                messages: [{ role: "system", content: systemPrompt }, { role: "user", content: text }], 
+                stream: true 
+            };
+            
+            const res = await fetch("http://localhost:11434/api/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+
+            if (!res.ok) {
+                // Remove dots and show error
+                temp.textContent = `Error ${res.status}: Ollama connection failed. Is the server running and model 'phi3:latest' available?`;
+            } else {
+                let output = "";
+                const reader = res.body.getReader();
+                const decoder = new TextDecoder();
+                
+                temp.textContent = ''; // Clear dots for streaming
+                
+                // Stream the response
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+                    
+                    const chunk = decoder.decode(value);
+                    const lines = chunk.split("\n").filter(Boolean);
+                    
+                    for (const line of lines) {
+                        try {
+                            const json = JSON.parse(line);
+                            const content = json?.message?.content;
+                            if (content) {
+                                output += content;
+                                temp.textContent = output;
+                                chatBody.scrollTop = chatBody.scrollHeight;
+                            }
+                        } catch (e) {
+                            // Ignore partial JSON
+                        }
+                    }
+                }
+                
+                if (output === "") {
+                    temp.textContent = "I couldn't get a valid response from the AI. Please try rephrasing.";
+                }
+            }
+        } catch (err) {
+            console.error("Ollama connection error:", err);
+            temp.textContent = "Connection error. Make sure Ollama is installed and running on http://localhost:11434.";
+        }
+    }
+    
+    // FINAL CLEANUP (Crucial for enabling input again)
+    isWaiting = false;
+    sendBtn.disabled = false;
+    chatBody.scrollTop = chatBody.scrollHeight;
+}
+    </script>
+</body>
+</html>
